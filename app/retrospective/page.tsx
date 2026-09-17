@@ -1,0 +1,61 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Building ModelMeter — Retrospective",
+  description: "A practical retrospective on building and validating ModelMeter with AI.",
+};
+
+export default function RetrospectivePage() {
+  return (
+    <main className="article-shell">
+      <nav className="article-nav">
+        <a href="/">← Back to ModelMeter</a>
+        <span>Sep 17, 2026 · 6 min read</span>
+      </nav>
+      <article className="article">
+        <p className="article-kicker">BUILD RETROSPECTIVE</p>
+        <h1>在四小时小项目里，我为什么先删功能</h1>
+        <p className="article-lead">
+          如果把这篇复盘写给三个月前的自己，我最想提醒的一件事是：短时间交付的核心不是“多写功能”，而是尽早决定哪些问题不解决。
+        </p>
+
+        <h2>先控制失败点，再谈功能数量</h2>
+        <p>
+          这次任务要求做一个能够公网访问的小工具。我选择了 AI API 价格计算器，而没有选择直接调用免费 API。原因并不是计算器更炫，而是它的失败点更少：不需要申请 Key，不受免费额度和跨域限制，也不会因为第三方接口临时不可用而让演示失效。同时，它又不是一张静态价格表，用户可以输入单次 Input Tokens、Output Tokens、每日请求量和每月使用天数，页面实时计算月度费用，并把不同模型按价格排序。
+        </p>
+
+        <h2>最难的不是公式，而是统一口径</h2>
+        <p>
+          OpenAI、Anthropic 和 Google 的官方页面都给出了很多选项，包括标准处理、缓存、Batch、长上下文、区域处理和限时促销。如果直接把数字抄进页面，看起来模型很多，实际上比较并不公平。我最后主动收窄范围：只计算标准、非缓存的文本 Token 价格；OpenAI 使用短上下文费率；Google 的限时价格在模型旁边单独标注。页面底部也明确写出不包含搜索、工具调用、图片和音频费用。这个取舍让功能少了一些，却让结果更容易解释。
+        </p>
+
+        <blockquote>短项目里，清楚写出“不做什么”，往往比再加一个按钮更有价值。</blockquote>
+
+        <h2>AI 帮我提速，也真的给错了答案</h2>
+        <p>
+          AI 在这次开发中最有帮助的地方，是快速搭建 React 页面结构、补齐响应式样式，以及把官方价格资料整理成统一数据结构。但 AI 也给了一个错误结果：初版代码从 Lucide 图标库中导入 GitHub 品牌图标，正式构建时才发现这个导出根本不存在。这个问题说明“页面能在编辑器里生成”不等于“项目能够上线”。我根据编译错误定位到图标导入，把它替换成可访问的文字标记，然后重新执行完整构建。相比假装 AI 全程正确，这次失败反而让我更清楚验证环节的价值。
+        </p>
+
+        <h2>我如何确认计算器不是“看起来能用”</h2>
+        <p>
+          默认场景每月有 4500 万输入 Token 和 1500 万输出 Token，GPT-5.6 Luna 的结果应为 45×0.2+15×1.2=27 美元；页面显示结果与手工计算一致。随后把每日请求数从 1000 改成 2000，费用同步变成 54 美元，说明计算链路随输入线性变化。每月天数输入 99 时会被限制为 31，页面也没有出现横向滚动。最后再执行生产构建，确认不是只有开发模式可以运行。
+        </p>
+
+        <h2>如果再给我八小时</h2>
+        <p>
+          我会更早把价格数据和界面代码拆开，并增加自动化回归测试；然后加入“直接粘贴文本并估算 Token”、缓存命中率和 Batch 模式，但会为每家供应商分别实现规则，而不是用一个看似统一、实际错误的开关。我还会做定期价格检查，让价格变化时自动提醒维护者。
+        </p>
+
+        <h2>写给三个月前的自己</h2>
+        <p>
+          这次最大的收获不是写出了一个计算器，而是建立了一条更可靠的交付顺序：先限定口径，再做最小可用链路；用官方资料确认数据；让构建、浏览器交互和边界输入共同验证结果；最后再补文档和复盘。AI 可以显著加快每一步，但“这个结果能不能被相信”仍然需要开发者自己负责。
+        </p>
+
+        <div className="article-cta">
+          <div><strong>ModelMeter</strong><span>Transparent AI API cost planning.</span></div>
+          <a href="/">Try the calculator →</a>
+        </div>
+      </article>
+    </main>
+  );
+}
