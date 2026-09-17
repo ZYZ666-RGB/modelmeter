@@ -8,6 +8,8 @@ workload assumptions.
 The calculator runs entirely in the browser. It does not call provider APIs,
 collect user data, or require an API key.
 
+**Live site:** [modelmeter-ai-cost.hksbsjdidn.chatgpt.site](https://modelmeter-ai-cost.hksbsjdidn.chatgpt.site)
+
 ## What it does
 
 - Accepts input tokens, output tokens, requests per day, and active days per month

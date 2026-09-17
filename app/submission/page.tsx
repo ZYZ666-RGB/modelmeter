@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "Technical internship screening project submission by ZYZ666-RGB.",
 };
 
-const siteUrl = "https://modelmeter-ai-cost.fuzzy-krill-5067.chatgpt.site";
+const siteUrl = "https://modelmeter-ai-cost.hksbsjdidn.chatgpt.site";
 
 export default function SubmissionPage() {
   return (
